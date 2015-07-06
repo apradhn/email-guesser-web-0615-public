@@ -19,13 +19,13 @@ class Predictor
   def guess(full_name, domain)
     @domain = domain
     @full_name = full_name
-    if patterns[:first_name_dot_last_name] === ex_email_from_domain
+    if patterns[:first_name_dot_last_name] === company_email
       [first_name_dot_last_name]
-    elsif patterns[:first_name_dot_last_initial] === ex_email_from_domain
+    elsif patterns[:first_name_dot_last_initial] === company_email
       [first_name_dot_last_initial]
-    elsif patterns[:first_initial_dot_last_name] === ex_email_from_domain
+    elsif patterns[:first_initial_dot_last_name] === company_email
       [first_initial_dot_last_name]
-    elsif patterns[:first_initial_dot_last_initial] === ex_email_from_domain
+    elsif patterns[:first_initial_dot_last_initial] === company_email
       [first_initial_dot_last_initial]
     else
       [first_name_dot_last_name, first_name_dot_last_initial, first_initial_dot_last_name, first_initial_dot_last_initial]
@@ -48,7 +48,7 @@ class Predictor
     first_initial + "." + last_initial + "@" + domain
   end
 
-  def ex_email_from_domain
+  def company_email
     emails_hash.values.find{|email| email.include?(domain)}
   end
 
