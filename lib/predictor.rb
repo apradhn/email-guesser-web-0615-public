@@ -29,25 +29,9 @@ class Predictor
     when patterns[:first_initial_dot_last_initial]
       [first_initial_dot_last_initial]
     else
-      [first_name_dot_last_name, first_name_dot_last_initial, first_initial_dot_last_name, first_initial_dot_last_initial]
+      all_email_patterns
     end
   end  
-
-  def first_name_dot_last_name
-    first_name + "." + last_name + "@" + domain
-  end
-
-  def first_name_dot_last_initial
-    first_name + "." + last_initial + "@" + domain
-  end
-
-  def first_initial_dot_last_name
-    first_initial + "." + last_name + "@" + domain
-  end
-
-  def first_initial_dot_last_initial
-    first_initial + "." + last_initial + "@" + domain
-  end
 
   def company_email
     emails_hash.values.find{|email| email.include?(domain)}
@@ -67,6 +51,26 @@ class Predictor
 
   def last_initial
     last_name[0]
+  end  
+
+  def first_name_dot_last_name
+    first_name + "." + last_name + "@" + domain
+  end
+
+  def first_name_dot_last_initial
+    first_name + "." + last_initial + "@" + domain
+  end
+
+  def first_initial_dot_last_name
+    first_initial + "." + last_name + "@" + domain
+  end
+
+  def first_initial_dot_last_initial
+    first_initial + "." + last_initial + "@" + domain
+  end
+
+  def all_email_patterns
+    [first_name_dot_last_name, first_name_dot_last_initial, first_initial_dot_last_name, first_initial_dot_last_initial]
   end
 
 end
