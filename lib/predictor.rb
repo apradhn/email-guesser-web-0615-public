@@ -2,7 +2,7 @@ require 'json'
 require 'pry'
 
 class Predictor
-  attr_reader :file, :emails_hash, :domain, :patterns, :first_name, :last_name
+  attr_reader :file, :emails_hash, :domain, :patterns, :full_name
 
 
   def initialize(path)
@@ -18,7 +18,7 @@ class Predictor
 
   def guess(full_name, domain)
     @domain = domain
-    parse_name(full_name)
+    @full_name = full_name
     if patterns[:first_name_dot_last_name] === ex_email_from_domain
       [first_name_dot_last_name]
     elsif patterns[:first_name_dot_last_initial] === ex_email_from_domain
@@ -37,24 +37,35 @@ class Predictor
   end
 
   def first_name_dot_last_initial
-    first_name + "." + last_name[0] + "@" + domain
+    first_name + "." + last_initial + "@" + domain
   end
 
   def first_initial_dot_last_name
-    first_name[0] + "." + last_name + "@" + domain
+    first_initial + "." + last_name + "@" + domain
   end
 
   def first_initial_dot_last_initial
-    first_name[0] + "." + last_name[0] + "@" + domain
+    first_initial + "." + last_initial + "@" + domain
   end
 
   def ex_email_from_domain
     emails_hash.values.find{|email| email.include?(domain)}
   end
 
-  def parse_name(full_name)
-    @first_name = full_name.split(" ").first.downcase
-    @last_name = full_name.split(" ").last.downcase
+  def first_name
+    full_name.split(" ").first.downcase
+  end
+
+  def last_name
+    full_name.split(" ").last.downcase
+  end
+
+  def first_initial
+    first_name[0]
+  end
+
+  def last_initial
+    last_name[0]
   end
 
 end
