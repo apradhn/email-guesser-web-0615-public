@@ -18,23 +18,33 @@ class Predictor
 
   def guess(full_name, domain)
     @domain = domain
-    @full_name = full_name
+    email = Email.new(full_name, domain)
     case company_email
     when patterns[:first_name_dot_last_name]
-      [first_name_dot_last_name]
+      [email.first_name_dot_last_name]
     when patterns[:first_name_dot_last_initial] 
-      [first_name_dot_last_initial]
+      [email.first_name_dot_last_initial]
     when patterns[:first_initial_dot_last_name]
-      [first_initial_dot_last_name]
+      [email.first_initial_dot_last_name]
     when patterns[:first_initial_dot_last_initial]
-      [first_initial_dot_last_initial]
+      [email.first_initial_dot_last_initial]
     else
-      all_email_patterns
+      email.all
     end
   end  
 
   def company_email
     emails_hash.values.find{|email| email.include?(domain)}
+  end
+
+end
+
+class Email
+  attr_reader :full_name, :domain
+
+  def initialize(full_name, domain)
+    @full_name = full_name
+    @domain = domain
   end
 
   def first_name
@@ -69,8 +79,7 @@ class Predictor
     first_initial + "." + last_initial + "@" + domain
   end
 
-  def all_email_patterns
+  def all
     [first_name_dot_last_name, first_name_dot_last_initial, first_initial_dot_last_name, first_initial_dot_last_initial]
-  end
-
+  end  
 end
