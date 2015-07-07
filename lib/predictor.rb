@@ -3,17 +3,21 @@ require 'pry'
 
 class Predictor
   attr_reader :file, :emails_hash, :domain, :patterns, :full_name
-
-
-  def initialize(path)
-    @file = File.read(path)
-    @emails_hash = JSON.parse(file)
-    @patterns = {
+  PATTERNS = {
       first_name_dot_last_name: /\A[a-z]{2,}\.[a-z]{2,}@[a-z]+\.[a-z]{3}/,
       first_name_dot_last_initial: /\A[a-z]{2,}\.[a-z]{1}@[a-z]+\.[a-z]{3}/,
       first_initial_dot_last_name: /\A[a-z]{1}\.[a-z]{2,}@[a-z]+\.[a-z]{3}/,
       first_initial_dot_last_initial: /\A[a-z]{1}\.[a-z]{1}@[a-z]+\.[a-z]{3}/
     }    
+
+
+  def initialize(path)
+    @file = File.read(path)
+    @emails_hash = JSON.parse(file)  
+  end
+
+  def patterns
+    PATTERNS
   end
 
   def guess(full_name, domain)
